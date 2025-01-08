@@ -39,8 +39,9 @@ public class BookService {
      * TODO: Use the bookDAO to retrieve all books.
      * @return all books.
      */
-    public List<Book> getAllBooks() {
-        return null;
+    public List<Book> getAllBooks() {   // return type is a collection List of 'Book' elements
+        // invoke .getAllBooks() method from 'BookDAO' class obj -- to retrieve records/rows of books from existing 'Book' table
+        return bookDAO.getAllBooks();
     }
     /**
      * TODO: Use the bookDAO to persist a book to the database.
@@ -51,15 +52,23 @@ public class BookService {
      * key was already in use.)
      */
     public Book addBook(Book book) {
-
-        return null;
+        // retrieve arg's 'book' isbn value using .getIsbn() method from Book class 
+        int newBookISBN = book.getIsbn();
+        // check to see if 'book' isbn is already within 'Book' table using 'BookDAO' .getBookByIsbn() method
+        if(bookDAO.getBookByIsbn(newBookISBN) != null){
+            // if book already exists ...
+            return null;
+        }
+        // otw -- add it as a record/row into 'Book' table using 'BookDAO' class obj .insertBook() method
+        return bookDAO.insertBook(book);
     }
     /**
      * TODO: Use the bookDAO to retrieve a list of all books that have a bookCount above 0.
      * @return all available books (bookCount over zero)
      */
     public List<Book> getAllAvailableBooks() {
-        return null;
+        // call .getBooksWithBookCountOverZero() method from 'BookDAO' class obj to retrieve books that are currently there in the 'Book' table AT THE LIBRARY
+        return bookDAO.getBooksWithBookCountOverZero();
     }
 
 }

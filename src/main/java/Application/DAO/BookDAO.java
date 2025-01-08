@@ -32,7 +32,9 @@ public class BookDAO {
         List<Book> books = new ArrayList<>();
         try {
             //Write SQL logic here
-            String sql = "change me";
+            String sql = "SELECT * FROM Book";
+            // Note: Use Wildcard * to shorthand select all columns in 'Book' table to show
+            // utilizing 'PreparedStatement' interface over 'Statement' interface in executing SQL statement b/c PS pre-compiles SQL & lower likelihood of SQL Injection from User input
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){
@@ -57,10 +59,12 @@ public class BookDAO {
         Connection connection = ConnectionUtil.getConnection();
         try {
             //Write SQL logic here
-            String sql = "change me";
+            String sql = "SELECT * FROM Book WHERE isbn = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             //write preparedStatement's setInt method here.
+            // utilize PrepareStatement's .setInt() method to replace ? placeholder in SQL statement w/ arg's 'isbn' value
+            preparedStatement.setInt(1, isbn);
 
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){
@@ -87,10 +91,20 @@ public class BookDAO {
         Connection connection = ConnectionUtil.getConnection();
         try {
             //Write SQL logic here
-            String sql = "change me" ;
+            // Note: 'PreparedStatement' SQL queries has ? placeholders
+            String sql = "INSERT INTO Book (isbn, author_id, title, copies_available) VALUES (?, ?, ?, ?)" ;
+            // Better practice: 'PreparedStatement' interface to possible deter SQL Injection attack from user input
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             //write preparedStatement's setString and setInt methods here.
+
+            // write/create SQL query/statement using 'PreparedStatement' .setInt() & .setString() methods to fill in ? placeholders
+            
+            // when INSERT-ing row/record to table -- should probably include as much data as possible to fill it up if column field DN have default or auto generated
+            preparedStatement.setInt(1, book.getIsbn());
+            preparedStatement.setInt(2, book.getAuthor_id());
+            preparedStatement.setString(3, book.getTitle());
+            preparedStatement.setInt(4, book.getCopies_available());
 
             preparedStatement.executeUpdate();
             return book;
@@ -109,7 +123,7 @@ public class BookDAO {
         List<Book> books = new ArrayList<>();
         try {
             //Write SQL logic here
-            String sql = "change me";
+            String sql = "SELECT * FROM Book WHERE copies_available > 0";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             ResultSet rs = preparedStatement.executeQuery();
